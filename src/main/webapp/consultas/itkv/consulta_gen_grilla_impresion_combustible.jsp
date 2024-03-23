@@ -15,7 +15,7 @@
         Statement   st      = connection.createStatement(); 
         ResultSet   rs; 
         String tr="";
-        rs = st.executeQuery(" select * from itkv_salida1 where convert(date,fecha)='"+fecha+"' order by 1 desc  ");
+        rs = st.executeQuery(" select * from itkv_salida1 where TIPO_registro IN ('CONSUMO','TRANSFERENCIA') AND convert(date,fecha)='"+fecha+"' order by 1 desc  ");
         
          String   cabecera = " <table id='grilla' class=' table-bordered compact hover' style='width:100%'>"
                 + "<thead>"
@@ -30,12 +30,13 @@
                    + " <th>Tipo documento</th>"
                    + " <th>Ubicacion</th>"
                    + " <th></th>"
+                   + " <th></th>"
                 
                 + "</tr>"
              
                 + " </thead> "
                 + " <tbody >";
-         
+        
         while (rs.next()) 
         {
             String archivo="";
@@ -63,7 +64,8 @@
             +"  <td>"
             + " <div>"
             + " <form action=\"cruds/itkv/control_reporte_consumo_combustible.jsp\" target=\"blank\"><input type=\"submit\" value=\"Reporte\" class=\"form-control bg-"+color+"\"> <input type='hidden' value='"+archivo+"' name='archivo'> <input type=\"hidden\" id=\"id\" name=\"id\" value=\""+rs.getString("id")+"\"></form>  </td>"               
-            + "</td>"               
+            + "</td>"  
+            + "<td><input type='button' value='Ver' class='form-control bg-success' onclick='cuadroImagenItkv("+rs.getString("id")+")' ></td>  "
             + " </tr>";
         }
         

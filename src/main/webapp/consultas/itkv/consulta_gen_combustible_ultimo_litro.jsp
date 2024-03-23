@@ -15,7 +15,8 @@
         Statement   st      = connection.createStatement(); 
         ResultSet   rs; 
         String tr="";
-        rs = st.executeQuery("select isnull(max(lt_fin),0)  as fin from itkv_salida1 WHERE ID_boca='"+id_boca+"' ");
+       // rs = st.executeQuery("select isnull(max(lt_fin),0)  as fin from itkv_salida1 WHERE ID_boca='"+id_boca+"' ");
+        rs = st.executeQuery("select  lt_fin  as fin from itkv_salida1 WHERE  id in ( select  max(id)  from itkv_salida1 where   ID_boca='"+id_boca+"'	)");
         
             String litro="";
         while (rs.next()) 

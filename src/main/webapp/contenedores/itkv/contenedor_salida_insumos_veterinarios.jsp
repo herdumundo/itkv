@@ -3,8 +3,7 @@
    Created on : 15-dic-2021, 9:51:44
    Author     : hvelazquez
 --%>
-<%@page import="itkv.itkv_datos"%>
-<%@page import="java.util.List"%>
+ <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="org.jfree.data.general.Dataset"%>
 <%@include  file="../../versiones.jsp" %>
@@ -12,7 +11,7 @@
 <%@include  file="../../cruds/conexion.jsp" %> 
 
 <%    PreparedStatement ps, ps2, ps3, ps4, ps5, ps6,ps7;
-    ResultSet rs, rs2, rs3, rs4, rs5, rs6,rs7;
+    ResultSet rs, rs2, rs3, rs4, rs5, rs6,rsInsumos;
     try {
         ps = connection.prepareStatement(" SELECT DISTINCT T0.[U_retiradopor] as U_retiradopor              FROM    IGE1 T0");// 3
         rs = ps.executeQuery();
@@ -26,9 +25,12 @@
         ps5 = connection.prepareStatement(" SELECT T0.[PrcCode], T0.[PrcName], T0.[U_CodAnt], T0.[U_Comen]  FROM    OPRC T0 WHERE T0.[DimCode] =  1");// ACTIVIDAD
         rs5 = ps5.executeQuery();
     
+        ps6 = connection.prepareStatement(" SELECT *  FROM    itkv_categorias_insumos_veterinarios ");// CATEGORIAS
+        rs6 = ps6.executeQuery();
+    
 
-        ps7 = connection.prepareStatement("SELECT ItemCode , ItemName  , ItmsGrpCod 	 , OnHand , InvntryUom     FROM A0_ITKV.dbo. oitm	where ItemCode like '%insu%'");// ACTIVIDAD
-        rs7 = ps7.executeQuery();
+        ps7 = connection.prepareStatement(" SELECT ItemCode , ItemName  , ItmsGrpCod 	 , OnHand , InvntryUom     FROM  oitm	 where    QryGroup2='Y' ");// ACTIVIDAD
+        rsInsumos = ps7.executeQuery();
   
     
 %>
@@ -38,7 +40,7 @@
 <head>   
 <label  ><b></b></label> 
 <div class="float-right d-none d-sm-inline-block" >
-      <a href="manuales/Salida_repuestos.pdf" target="_blank">Manual de usuario</a>
+      <a href="manuales/Insumos_veterinarios.pdf" target="_blank">Manual de usuario</a>
 </div></head><!-- comment -->
 <div class="col-lg-20 ">
     <div class="position-relative p-3 bg-navy"  >
@@ -66,16 +68,35 @@
     </select>
      <input type="text" class="form-control " placeholder="INGRESE NOMBRE" value=""   id="retirado_por" style="display: none">
         
-    
-    <strong ><a>Rubro</a></strong>
-    <select class="form-control" id="rubro">
+    <strong><a>Ubicacion</a></strong>
+    <select class="form-control selectpicker " data-live-search="true" id="ubicacion">
+     
+        <%  while (rs3.next()) 
+        {%>
+        <option value="<%=rs3.getString("PrcCODE")%>" desc="<%=rs3.getString("PrcName")%>" > 
+            <%=rs3.getString("PrcName")%>
+        </option>    
+        <% }%>
+    </select> 
+  <strong><a>Categoria</a></strong>
+  <select class="form-control selectpicker " id="categoria" required>.
+    <option value="">Seleccione Categoria</option>    
+        <%  while (rs6.next()) 
+        {%>
+        <option value="<%=rs6.getString("descripcion")%>"   > 
+            <%=rs6.getString("descripcion")%>
+        </option>    
+        <% }%>
+    </select> 
+    <strong ><a>Actividad</a></strong>
+    <select class="form-control" id="actividad">
         <%  while (rs4.next()) {%>
         <option value="<%=rs4.getString("PrcCODE")%>" desc="<%=rs4.getString("PrcName")%>"><%=rs4.getString("PrcName")%></option>    
         <% }%>
     </select> 
 
-    <strong ><a>Actividad</a></strong>
-    <select class="form-control" id="actividad">
+    <strong ><a>Rubro</a></strong>
+    <select class="form-control" id="rubro">
         <%  while (rs5.next()) {%>
         <option value="<%=rs5.getString("PrcCODE")%>" desc="<%=rs5.getString("PrcName")%>"><%=rs5.getString("PrcName")%></option>    
         <% }%>
@@ -91,8 +112,8 @@
                 <tr>
                     <th >  <strong ><a>Item</a></strong>
     <select class="form-control selectpicker" data-live-search="true"  id="item">
-        <%  while (rs7.next()) {%>
-        <option value="<%=rs7.getString("itemcode")%>" desc="<%=rs7.getString("itemname")%>"><%=rs7.getString("itemname")%></option>    
+        <%  while (rsInsumos.next()) {%>
+        <option value="<%=rsInsumos.getString("itemcode")%>" desc="<%=rsInsumos.getString("itemname")%>"><%=rsInsumos.getString("itemname")%></option>    
         <% }%>
     </select></th>
     <th><input type="number"  class=" form-control"  id="cantidad" placeholder="Ingrese cantidad"></th>

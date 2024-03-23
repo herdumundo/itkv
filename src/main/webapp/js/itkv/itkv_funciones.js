@@ -25,10 +25,10 @@ function ir_consumo_combustible_itkv()
             $('#boca').val('DEP_TAL').prop('selected', true);
             $('#boca').selectpicker('refresh');
             $(".checkbox").bootstrapToggle(),
-            $("#check").change(function () {
+                    $("#check").change(function () {
                 1 == $(this).prop("checked") ? $("#band").val("SUGRAL") : $("#band").val("ITA KAAVO");
-                });
-                $("#form_add_consumo").on("submit", function (e) {
+            });
+            $("#form_add_consumo").on("submit", function (e) {
                 e.preventDefault(),
                         registrar_salida1_itkv();
                 e.stopPropagation();
@@ -53,6 +53,64 @@ function ir_consumo_combustible_itkv()
     });
 
 }
+
+function irGastosCombustibleItkv()
+{
+    window.location.hash = "SCFBAL";
+    $.ajax({
+        type: "POST",
+        url: ruta_contenedores_itkv + "contenedorGastosCombustible.jsp",
+        beforeSend: function (xhr) {
+            cargar_load("Cargando...");
+        },
+        success: function (data)
+        {
+            $("#contenedor_principal").html("");
+            $("#contenedor_principal").html(data);
+            $('.selectpicker').selectpicker({size: '10'
+            });
+            $('#ubicacion').val('UB-00000').prop('selected', true);
+            $('#ubicacion').selectpicker('refresh');
+
+            $('#rubro').val('UPR-001').prop('selected', true);
+            $('#rubro').selectpicker('refresh');
+
+            $('#actividad').val('GAN').prop('selected', true);
+            $('#actividad').selectpicker('refresh');
+
+            $('#boca').val('DEP_TAL').prop('selected', true);
+            $('#boca').selectpicker('refresh');
+            $(".checkbox").bootstrapToggle(),
+                    $("#check").change(function () {
+                1 == $(this).prop("checked") ? $("#band").val("SUGRAL") : $("#band").val("ITA KAAVO");
+            });
+            $("#form_add_consumo").on("submit", function (e) {
+                e.preventDefault(),
+                        registrarGastosItkv();
+                e.stopPropagation();
+            }),
+                    $(".autoNumeric").autoNumeric('init', {
+                aSep: '.',
+                aDec: ',',
+                aForm: true,
+                vMax: '999999999',
+                vMin: '0'
+            });
+
+
+            cerrar_load();
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 404 || XMLHttpRequest.status == 500) {
+                location.reload();
+            }
+        }
+    });
+
+}
+
+
 
 function ir_cisterna_combustible_itkv() {
 
@@ -137,15 +195,15 @@ function ir_salida_repuesto_itkv()
                 vMax: '999999999',
                 vMin: '0'
             });
-            
-              $('#tabla').dataTable({
-                  "language":
+
+            $('#tabla').dataTable({
+                "language":
                         {
                             "sUrl": "js/Spanish.txt"
                         }
-              });
-            eliminar_fila_repuesto_itkv();    
-                
+            });
+            eliminar_fila_repuesto_itkv();
+
             cerrar_load();
 
         },
@@ -181,7 +239,7 @@ function ir_salida_insumos_veterinarios_itkv()
             $('#actividad').val('GAN').prop('selected', true);
             $('#actividad').selectpicker('refresh');
 
-            $("#form_add_consumo").on("submit", function (e) 
+            $("#form_add_consumo").on("submit", function (e)
             {
                 e.preventDefault(),
                         registrar_salida_insumo_veterinario_itkv();
@@ -194,15 +252,15 @@ function ir_salida_insumos_veterinarios_itkv()
                 vMax: '999999999',
                 vMin: '0'
             });
-            
-              $('#tabla').dataTable({
-                  "language":
+
+            $('#tabla').dataTable({
+                "language":
                         {
                             "sUrl": "js/Spanish.txt"
                         }
-              });
-            eliminar_fila_repuesto_itkv();    
-                
+            });
+            eliminar_fila_repuesto_itkv();
+
             cerrar_load();
 
         },
@@ -214,9 +272,9 @@ function ir_salida_insumos_veterinarios_itkv()
     });
 }
 
-
 function ir_impresiones_insumos_veterinarios_itkv()
-{ window.location.hash = "IRISRI";
+{
+    window.location.hash = "IRISRI";
     $.ajax({
         type: "POST",
         url: ruta_contenedores_itkv + "contenedor_insumos_veterinarios_reporte.jsp",
@@ -229,7 +287,7 @@ function ir_impresiones_insumos_veterinarios_itkv()
             $("#contenedor_principal").html(data);
             cargar_estilo_calendario_global('dd/mm/yyyy', true);
 
-            ir_grilla_salida_repuesto_itkv();
+            ir_grilla_insumos_veterinarios_itkv();
             cerrar_load();
 
         },
@@ -241,12 +299,36 @@ function ir_impresiones_insumos_veterinarios_itkv()
     });
 }
 
-
-
-
-function ir_balanceado_itkv() 
+function ir_impresiones_balanceados_itkv()
 {
-   $.ajax({
+    window.location.hash = "IRISRI";
+    $.ajax({
+        type: "POST",
+        url: ruta_contenedores_itkv + "contenedor_consumo_balanceado_reporte.jsp",
+        beforeSend: function (xhr) {
+            cargar_load("Cargando...");
+        },
+        success: function (data)
+        {
+            $("#contenedor_principal").html("");
+            $("#contenedor_principal").html(data);
+            cargar_estilo_calendario_global('dd/mm/yyyy', true);
+
+            ir_grilla_consumo_balanceados_itkv();
+            cerrar_load();
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 404 || XMLHttpRequest.status == 500) {
+                location.reload();
+            }
+        }
+    });
+}
+
+function ir_balanceado_itkv()
+{
+    $.ajax({
         type: "POST",
         url: ruta_contenedores_itkv + "contenedor_consumo_balanceado.jsp",
         beforeSend: function (xhr) {
@@ -266,11 +348,11 @@ function ir_balanceado_itkv()
 
             $('#actividad').val('GAN').prop('selected', true);
             $('#actividad').selectpicker('refresh');
-
-            $("#form_add_consumo").on("submit", function (e) 
+            cargar_estilo_calendario_global('dd/mm/yyyy', true);
+            $("#form_add_consumo").on("submit", function (e)
             {
                 e.preventDefault(),
-                        registrar_salida_insumo_veterinario_itkv();
+                        registrar_consumo_balanceados_itkv();
                 e.stopPropagation();
             }),
                     $(".autoNumeric").autoNumeric('init', {
@@ -280,15 +362,15 @@ function ir_balanceado_itkv()
                 vMax: '999999999',
                 vMin: '0'
             });
-            
-              $('#tabla').dataTable({
-                  "language":
+
+            $('#tabla').dataTable({
+                "language":
                         {
                             "sUrl": "js/Spanish.txt"
                         }
-              });
-            eliminar_fila_repuesto_itkv();    
-                
+            });
+            eliminar_fila_repuesto_itkv();
+
             cerrar_load();
 
         },
@@ -301,10 +383,104 @@ function ir_balanceado_itkv()
 
 }
 
+function registrarGastosItkv() {
+
+    if ($("#retirado_por").val() == "") {
+        aviso_generico(0, "SELECCIONE RESPONSABLE");
+    }
+    if ($("#tanqueLleno").val() == "") {
+        aviso_generico(0, "SELECCIONE CARGA DE TANQUE");
+    } else {
+
+        var responsable = $("#retirado_por").val();
+        var id_activo = $("#activo").attr('code');
+        var desc_activo = $("#activo").attr('value');
+        var id_ubicacion = $("#ubicacion").find(':selected').attr('value');
+        var desc_ubicacion = $("#ubicacion").find(':selected').attr('desc');
+        var id_rubro = $("#rubro").find(':selected').attr('value');
+        var desc_rubro = $("#rubro").find(':selected').attr('desc');
+        var id_actividad = $("#actividad").find(':selected').attr('value');
+        var desc_actividad = $("#actividad").find(':selected').attr('desc');
+        var km_ho = $("#km_ho").val();
+
+        var band = $("#band").val();
+        var lt_total = $("#lt_total").val();
+        var id_tipo_combustible = $("#tipo_combus").find(':selected').attr('value');
+        var tipo_combustible = $("#tipo_combus").find(':selected').attr('desc');
+
+
+
+
+        Swal.fire({
+            title: 'CONFIRMACION',
+            text: "DESEA GENERAR EL DOCUMENTO?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#001F3F',
+            cancelButtonColor: '#001F3F',
+            confirmButtonText: 'SI!',
+            cancelButtonText: 'NO!'}).then((result) =>
+        {
+            if (result.value)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: ruta_cruds_itkv + "crudRegistrarGastosItkv.jsp",
+                    data: {
+
+                        responsable: responsable,
+                        id_activo: id_activo,
+                        desc_activo: desc_activo,
+                        id_ubicacion: id_ubicacion,
+                        desc_ubicacion: desc_ubicacion,
+                        id_rubro: id_rubro,
+                        desc_rubro: desc_rubro,
+                        id_actividad: id_actividad,
+                        desc_actividad: desc_actividad,
+                        km_ho: km_ho.replaceAll(".", ""),
+                        lt_total: lt_total.replaceAll(".", ""),
+                        id_tipo_combustible: id_tipo_combustible,
+                        tipo_combustible: tipo_combustible,
+                        band: band,
+                        tanqueLleno: $("#tanqueLleno").val()
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: "PROCESANDO!",
+                            html: "<strong>ESPERE</strong>...",
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: !1,
+                            onBeforeOpen: () => {
+                                Swal.showLoading(),
+                                        (timerInterval = setInterval(() => {
+                                            Swal.getContent().querySelector("strong").textContent = Swal.getTimerLeft();
+                                        }, 1e3));
+                            },
+                        });
+                    },
+                    success: function (res)
+                    {
+                        aviso_generico(res.tipo_respuesta, res.mensaje);
+                        if (res.tipo_respuesta == 1)
+                        {
+                            irGastosCombustibleItkv()();
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+}
+
 function registrar_salida1_itkv() {
 
     if ($("#retirado_por").val() == "") {
         aviso_generico(0, "SELECCIONE RESPONSABLE");
+    }
+    if ($("#tanqueLleno").val() == "") {
+        aviso_generico(0, "SELECCIONE CARGA DE TANQUE");
     } else {
 
         var responsable = $("#retirado_por").val();
@@ -328,6 +504,8 @@ function registrar_salida1_itkv() {
         var tipo_combustible = $("#tipo_combus").find(':selected').attr('desc');
 
 
+
+
         Swal.fire({
             title: 'CONFIRMACION',
             text: "DESEA GENERAR EL DOCUMENTO?",
@@ -340,7 +518,8 @@ function registrar_salida1_itkv() {
         {
             if (result.value)
             {
-                $.ajax({
+ 
+                    $.ajax({
                     type: "POST",
                     url: ruta_cruds_itkv + "crud_registrar_salida_combustible.jsp",
                     data: {
@@ -362,8 +541,8 @@ function registrar_salida1_itkv() {
                         lt_total: lt_total.replaceAll(".", ""),
                         id_tipo_combustible: id_tipo_combustible,
                         tipo_combustible: tipo_combustible,
-                        band:band
-
+                        band: band,
+                        tanqueLleno: $("#tanqueLleno").val()
 
                     },
                     beforeSend: function () {
@@ -383,21 +562,70 @@ function registrar_salida1_itkv() {
                     },
                     success: function (res)
                     {
-                        aviso_generico(res.tipo_respuesta, res.mensaje);
-                        if (res.tipo_respuesta == 1)
+ 
+                       if (res.tipo_respuesta > 0)
                         {
-                            ir_consumo_combustible_itkv();
-                        }
+                            var fileInput = $('#imagenInput')[0].files[0];
+                            var quality = 0.5; // Calidad de compresión (rango: 0-1)
+                            var nombreImagen = res.tipo_respuesta + ".jpg"; // Nombre de la imagen
+
+                            // Comprimir la imagen utilizando compressor.js
+                            new Compressor(fileInput, {
+                                quality: quality,
+                                maxWidth: 800,
+                                success: function (result) {
+                                    // Crear un objeto FormData para enviar la imagen comprimida al servidor
+                                    var formData = new FormData();
+                                    formData.append('image', result); // Imagen comprimida
+
+                                    // Enviar la imagen comprimida al servidor utilizando AJAX
+                                    $.ajax({
+                                        url: 'http://192.168.55.140:8000/subirImagen',
+                                        type: 'POST',
+                                        data: formData,
+                                        contentType: false,
+                                        processData: false,
+                                        headers: {
+                                            // Especificar el nombre de la imagen en el encabezado de la solicitud
+                                            'Nombre-Imagen': nombreImagen
+                                        },
+                                        success: function (response) {
+                                           // console.log(response);
+                                            aviso_generico(1, "REGISTRADO CON EXITO.");
+                                            ir_consumo_combustible_itkv();
+                                            },
+                                        error: function (xhr, status, error) {
+                                            //console.error(error);
+                                           // alert('Error al subir la imagen');
+                                            aviso_generico(1, "REGISTRADO CON EXITO.");
+                                            ir_consumo_combustible_itkv();
+                                        }
+                                    });
+                                },
+                                error: function (error) {
+                                    console.error('Error al comprimir la imagen:', error);
+                                    alert('Error al comprimir la imagen');
+                                }
+                            });
+                            //  
+                        } 
                     }
-                });
+                });       
+                    
+
+                
             }
         });
 
     }
 }
 
+
+
+
+
 function registrar_salida2_itkv() {
- 
+
     var responsable = $("#retirado_por").val();
     var id_boca = $("#boca").find(':selected').attr('value');
     var desc_boca = $("#boca").find(':selected').attr('desc');
@@ -547,8 +775,8 @@ function ir_grilla_consumo_combustible_itkv()
 
 }
 
-function ir_impre_salida_repuesto_itkv(){
-    
+function ir_impre_salida_repuesto_itkv() {
+
     window.location.hash = "IRISRI";
     $.ajax({
         type: "POST",
@@ -608,6 +836,80 @@ function ir_grilla_salida_repuesto_itkv()
     });
 
 }
+
+
+function ir_grilla_insumos_veterinarios_itkv()
+{
+    $.ajax({
+        type: "POST",
+        url: ruta_consultas_itkv + "consulta_gen_grilla_impresion_insumos_veterinarios.jsp",
+        data: ({fecha: $("#fecha").val()}),
+        beforeSend: function (xhr) {
+            cargar_load("Cargando...");
+        },
+        success: function (data)
+        {
+            // $("#div_grilla").html("");
+            $("#div_grilla").html(data.tabla);
+            $("#grilla").DataTable
+                    ({
+                        paging: false,
+                        "ordering": false,
+                        "language":
+                                {
+                                    "sUrl": "js/Spanish.txt"
+                                },
+                        scrollX: true,
+                    });
+            cerrar_load();
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 404 || XMLHttpRequest.status == 500) {
+                location.reload();
+            }
+        }
+    });
+
+}
+
+
+function ir_grilla_consumo_balanceados_itkv()
+{
+    $.ajax({
+        type: "POST",
+        url: ruta_consultas_itkv + "consulta_gen_grilla_impresion_consumo_balanceados.jsp",
+        data: ({fecha: $("#fecha").val()}),
+        beforeSend: function (xhr) {
+            cargar_load("Cargando...");
+        },
+        success: function (data)
+        {
+            // $("#div_grilla").html("");
+            $("#div_grilla").html(data.tabla);
+            $("#grilla").DataTable
+                    ({
+                        paging: false,
+                        "ordering": false,
+                        "language":
+                                {
+                                    "sUrl": "js/Spanish.txt"
+                                },
+                        scrollX: true,
+                    });
+            cerrar_load();
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 404 || XMLHttpRequest.status == 500) {
+                location.reload();
+            }
+        }
+    });
+
+}
+
+
 
 function insert_valor_responsable_combo_itkv() {
     var responsable = $("#retirado_por_select").val();
@@ -701,7 +1003,7 @@ function eliminar_fila_repuesto_itkv() {
         var table = $('#tabla').DataTable();//OBTENGO EL ID DE MI TABLA.
         var id_carro = table.cell($(this).closest('tr'), 0).data();// OBTENGO EL VALOR DE LA POSICION 8 DE LA FILA SELECCIONADA PARA ELIMINAR, EN ESTE CASO SELECCIONO EL ID DEL LOTE.
         table.row($('#row' + id_carro)).remove().draw();
-       
+
 
 
 
@@ -709,15 +1011,15 @@ function eliminar_fila_repuesto_itkv() {
 
 }
 
-function registrar_transferencias_itkv(){
-    
-    
+function registrar_transferencias_itkv() {
+
+
     var filas = document.querySelectorAll("#tabla tbody tr");
     jsonObj = [];
     var cont = 0;
     filas.forEach(function (e)
     {
-         var columnas = e.querySelectorAll("td");
+        var columnas = e.querySelectorAll("td");
         item = {}
         item ["codigo"] = columnas[0].textContent;
         item ["articulo"] = columnas[1].textContent;
@@ -725,112 +1027,114 @@ function registrar_transferencias_itkv(){
         jsonObj.push(item);
         cont++;
     });
-    
-        var json_string = JSON.stringify(jsonObj);
-        if(json_string=='[]'){
-                    aviso_generico('0','NO SE HA INGRESADO ARTICULO');
-        }
-        
-        else {
-            
-    var responsable         = $("#retirado_por").val();
-  
-    var id_activo           = $("#activo").attr('code');
-    var desc_activo         = $("#activo").attr('value');
-    
-    var id_rubro            = $("#rubro").find(':selected').attr('value');
-    var desc_rubro          = $("#rubro").find(':selected').attr('desc');
-  
-    var id_actividad        = $("#actividad").find(':selected').attr('value');
-    var desc_actividad      = $("#actividad").find(':selected').attr('desc');
 
- 
-    Swal.fire({
-        title: 'CONFIRMACION',
-        text: "DESEA GENERAR EL DOCUMENTO?",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#001F3F',
-        cancelButtonColor: '#001F3F',
-        confirmButtonText: 'SI!',
-        cancelButtonText: 'NO!'}).then((result) =>
-    {
-        if (result.value)
+    var json_string = JSON.stringify(jsonObj);
+    if (json_string == '[]') {
+        aviso_generico('0', 'NO SE HA INGRESADO ARTICULO');
+    } else {
+
+        var responsable = $("#retirado_por").val();
+
+        var id_activo = $("#activo").attr('code');
+        var desc_activo = $("#activo").attr('value');
+
+        var id_rubro = $("#rubro").find(':selected').attr('value');
+        var desc_rubro = $("#rubro").find(':selected').attr('desc');
+
+        var id_actividad = $("#actividad").find(':selected').attr('value');
+        var desc_actividad = $("#actividad").find(':selected').attr('desc');
+
+        var id_ubicacion = $("#ubicacion").find(':selected').attr('value');
+        var desc_ubicacion = $("#ubicacion").find(':selected').attr('desc');
+
+        Swal.fire({
+            title: 'CONFIRMACION',
+            text: "DESEA GENERAR EL DOCUMENTO?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#001F3F',
+            cancelButtonColor: '#001F3F',
+            confirmButtonText: 'SI!',
+            cancelButtonText: 'NO!'}).then((result) =>
         {
-            $.ajax({
-                type: "POST",
-                url: ruta_cruds_itkv + "crud_registrar_transferencias_itkv.jsp",
-                data: {
+            if (result.value)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: ruta_cruds_itkv + "crud_registrar_transferencias_itkv.jsp",
+                    data: {
 
-                    responsable     : responsable,
-                    id_activo       : id_activo,
-                    desc_activo     : desc_activo,
-                    id_rubro        : id_rubro,
-                    desc_rubro      : desc_rubro,
-                    id_actividad    : id_actividad,
-                    desc_actividad  : desc_actividad,
-                    jsonObj         : json_string
+                        responsable: responsable,
+                        id_activo: id_activo,
+                        desc_activo: desc_activo,
+                        id_rubro: id_rubro,
+                        desc_rubro: desc_rubro,
+                        id_actividad: id_actividad,
+                        desc_actividad: desc_actividad,
+                        id_ubicacion: id_ubicacion,
+                        desc_ubicacion: desc_ubicacion,
+                        jsonObj: json_string
 
 
-                },
-                beforeSend: function () {
-                    Swal.fire({
-                        title: "PROCESANDO!",
-                        html: "<strong>ESPERE</strong>...",
-                        showCancelButton: false,
-                        showConfirmButton: false,
-                        allowOutsideClick: !1,
-                         showConfirmButton: false,
-                                          willOpen: () => {
-                                              Swal.showLoading()
-                                          }
-                    });
-                },
-                success: function (res)
-                {
-                    aviso_generico(res.tipo_respuesta, res.mensaje);
-                    if (res.tipo_respuesta == 1)
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: "PROCESANDO!",
+                            html: "<strong>ESPERE</strong>...",
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: !1,
+                            showConfirmButton: false,
+                            willOpen: () => {
+                                Swal.showLoading()
+                            }
+                        });
+                    },
+                    success: function (res)
                     {
-                        ir_salida_repuesto_itkv();
+                        aviso_generico(res.tipo_respuesta, res.mensaje);
+                        if (res.tipo_respuesta == 1)
+                        {
+                            ir_salida_repuesto_itkv();
+                        }
                     }
-                }
-            });
+                });
+            }
+        });
+
+
+    }
+}
+
+function get_ultimo_litro_boca_combustible_itkv() {
+
+    $.ajax({
+        type: "POST",
+        url: ruta_consultas_itkv + "consulta_gen_combustible_ultimo_litro.jsp",
+        data: {
+
+            id_boca: $("#boca").val()
+        },
+        success: function (res)
+        {
+            $("#lt_inicio").val(res.litro);
         }
     });
 
 
-        }
- }
 
-function get_ultimo_litro_boca_combustible_itkv(){
-    
-      $.ajax({
-                type: "POST",
-                url: ruta_consultas_itkv + "consulta_gen_combustible_ultimo_litro.jsp",
-                data: {
 
-                    id_boca     :  $("#boca").val() 
-                }, 
-                success: function (res)
-                {
-                    $("#lt_inicio").val(res.litro);     
-                }
-            });
-      
-   
+}
 
- 
- }
+function registrar_salida_insumo_veterinario_itkv() {
 
-function registrar_salida_insumo_veterinario_itkv(){
-    
-    
+
     var filas = document.querySelectorAll("#tabla tbody tr");
     jsonObj = [];
     var cont = 0;
     filas.forEach(function (e)
     {
-         var columnas = e.querySelectorAll("td");
+        var columnas = e.querySelectorAll("td");
         item = {}
         item ["codigo"] = columnas[0].textContent;
         item ["articulo"] = columnas[1].textContent;
@@ -838,72 +1142,206 @@ function registrar_salida_insumo_veterinario_itkv(){
         jsonObj.push(item);
         cont++;
     });
-    
-        var json_string = JSON.stringify(jsonObj);
-        if(json_string=='[]'){
-                    aviso_generico('0','NO SE HA INGRESADO ARTICULO');
-        }
-        
-        else {
-            
-    var responsable         = $("#retirado_por").val();
-  
-    var id_rubro            = $("#rubro").find(':selected').attr('value');
-    var desc_rubro          = $("#rubro").find(':selected').attr('desc');
-  
-    var id_actividad        = $("#actividad").find(':selected').attr('value');
-    var desc_actividad      = $("#actividad").find(':selected').attr('desc');
 
- 
-    Swal.fire({
-        title: 'CONFIRMACION',
-        text: "DESEA GENERAR EL DOCUMENTO?",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#001F3F',
-        cancelButtonColor: '#001F3F',
-        confirmButtonText: 'SI!',
-        cancelButtonText: 'NO!'}).then((result) =>
-    {
-        if (result.value)
+    var json_string = JSON.stringify(jsonObj);
+    if (json_string == '[]') {
+        aviso_generico('0', 'NO SE HA INGRESADO ARTICULO');
+    } else {
+
+        var responsable = $("#retirado_por").val();
+
+        var id_rubro = $("#rubro").find(':selected').attr('value');
+        var desc_rubro = $("#rubro").find(':selected').attr('desc');
+
+        var id_actividad = $("#actividad").find(':selected').attr('value');
+        var desc_actividad = $("#actividad").find(':selected').attr('desc');
+
+        var id_ubicacion = $("#ubicacion").find(':selected').attr('value');
+        var desc_ubicacion = $("#ubicacion").find(':selected').attr('desc');
+
+        var categoria = $("#categoria").val();
+
+
+        Swal.fire({
+            title: 'CONFIRMACION',
+            text: "DESEA GENERAR EL DOCUMENTO?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#001F3F',
+            cancelButtonColor: '#001F3F',
+            confirmButtonText: 'SI!',
+            cancelButtonText: 'NO!'}).then((result) =>
         {
-            $.ajax({
-                type: "POST",
-                url: ruta_cruds_itkv + "crud_registrar_salida_insumos_veterinarios.jsp",
-                data: {
+            if (result.value)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: ruta_cruds_itkv + "crud_registrar_salida_insumos_veterinarios.jsp",
+                    data: {
 
-                    responsable     : responsable,
-                    id_rubro        : id_rubro,
-                    desc_rubro      : desc_rubro,
-                    id_actividad    : id_actividad,
-                    desc_actividad  : desc_actividad,
-                    jsonObj         : json_string
-
-
-                },
-                beforeSend: function () {
-                    Swal.fire({
-                        title: "PROCESANDO!",
-                        html: "<strong>ESPERE</strong>...",
-                        showCancelButton: false,
-                        showConfirmButton: false,
-                        allowOutsideClick: !1,
-                        showConfirmButton: false,
-                        willOpen: () => {  Swal.showLoading() }
-                    });
-                },
-                success: function (res)
-                {
-                    aviso_generico(res.tipo_respuesta, res.mensaje);
-                    if (res.tipo_respuesta == 1)
+                        responsable: responsable,
+                        id_rubro: id_rubro,
+                        desc_rubro: desc_rubro,
+                        id_actividad: id_actividad,
+                        desc_actividad: desc_actividad,
+                        id_ubicacion: id_ubicacion,
+                        desc_ubicacion: desc_ubicacion,
+                        jsonObj: json_string,
+                        categoria: categoria
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: "PROCESANDO!",
+                            html: "<strong>ESPERE</strong>...",
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: !1,
+                            showConfirmButton: false,
+                            willOpen: () => {
+                                Swal.showLoading()
+                            }
+                        });
+                    },
+                    success: function (res)
                     {
+                        aviso_generico(res.tipo_respuesta, res.mensaje);
+                        if (res.tipo_respuesta == 1)
+                        {
                             ir_salida_insumos_veterinarios_itkv();
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
+        });
+
+
+    }
+}
+
+function registrar_consumo_balanceados_itkv() {
+
+
+    var filas = document.querySelectorAll("#tabla tbody tr");
+    jsonObj = [];
+    var cont = 0;
+    filas.forEach(function (e)
+    {
+        var columnas = e.querySelectorAll("td");
+        item = {}
+        item ["codigo"] = columnas[0].textContent;
+        item ["articulo"] = columnas[1].textContent;
+        item ["cantidad"] = columnas[2].textContent;
+        jsonObj.push(item);
+        cont++;
     });
 
+    var json_string = JSON.stringify(jsonObj);
+    if (json_string == '[]') {
+        aviso_generico('0', 'NO SE HA INGRESADO ARTICULO');
+    } else {
 
-        }
- }
+        var fecha = $("#fecha").val();
+        var responsable = $("#retirado_por").val();
+
+        var id_rubro = $("#rubro").find(':selected').attr('value');
+        var desc_rubro = $("#rubro").find(':selected').attr('desc');
+
+        var id_actividad = $("#actividad").find(':selected').attr('value');
+        var desc_actividad = $("#actividad").find(':selected').attr('desc');
+        var id_ubicacion = $("#ubicacion").find(':selected').attr('value');
+        var desc_ubicacion = $("#ubicacion").find(':selected').attr('desc');
+
+
+        Swal.fire({
+            title: 'CONFIRMACION',
+            text: "DESEA GENERAR EL DOCUMENTO?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#001F3F',
+            cancelButtonColor: '#001F3F',
+            confirmButtonText: 'SI!',
+            cancelButtonText: 'NO!'}).then((result) =>
+        {
+            if (result.value)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: ruta_cruds_itkv + "crud_registrar_consumo_balanceados.jsp",
+                    data: {
+
+                        responsable: responsable,
+                        id_rubro: id_rubro,
+                        desc_rubro: desc_rubro,
+                        id_actividad: id_actividad,
+                        desc_actividad: desc_actividad,
+                        id_ubicacion: id_ubicacion,
+                        desc_ubicacion: desc_ubicacion,
+                        jsonObj: json_string,
+                        fecha: fecha
+                    },
+                    beforeSend: function () {
+                        Swal.fire({
+                            title: "PROCESANDO!",
+                            html: "<strong>ESPERE</strong>...",
+                            showCancelButton: false,
+                            showConfirmButton: false,
+                            allowOutsideClick: !1,
+                            showConfirmButton: false,
+                            willOpen: () => {
+                                Swal.showLoading()
+                            }
+                        });
+                    },
+                    success: function (res)
+                    {
+                        aviso_generico(res.tipo_respuesta, res.mensaje);
+                        if (res.tipo_respuesta == 1)
+                        {
+                            ir_balanceado_itkv();
+                        }
+                    }
+                });
+            }
+        });
+
+
+    }
+}
+
+
+
+
+function cuadroImagenItkv(id) {
+     
+
+// Realizar una solicitud AJAX a la ruta de la imagen
+$.ajax({
+  url: 'http://192.168.55.140:8000/imagen?nombreImagen='+id,
+  method: 'GET',
+  xhrFields: {
+    responseType: 'blob' // Esperamos una respuesta de tipo Blob (imagen)
+  },
+   beforeSend: function () { 
+                        Swal.fire({
+                           customClass: 'swal-wide',
+                            html: `   <div class="form-group" id="divImagen"> </div>  `,
+                             showCancelButton: false,
+                            showConfirmButton: false
+                        });
+                    },
+  success: function(response) {
+    // Crear un elemento img y establecer su atributo src con la URL de la imagen
+     var divImagen = $('#divImagen');
+
+      var imagen = $('<img>').attr('src', URL.createObjectURL(response));
+    // Agregar la imagen al div
+    divImagen.append(imagen);
+  },
+  error: function(xhr, status, error) {
+    // Manejar errores si es necesario
+    console.error('Error al cargar la imagen:', error);
+  }
+});
+
+
+}

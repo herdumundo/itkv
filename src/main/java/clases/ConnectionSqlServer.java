@@ -10,8 +10,8 @@ public class ConnectionSqlServer {
  String db = "GrupoMaehara";
    //    String db = "zz_prueba_GrupoMaehara_2";
 
-    //String ip = "192.168.1.52";
-    String ip = "172.16.1.202";    
+    String ip = "26.175.209.157";
+    // String ip = "localhost";    
     Connection connection=null;
  
         try 

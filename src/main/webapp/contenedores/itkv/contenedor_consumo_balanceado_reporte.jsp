@@ -38,7 +38,7 @@ connection.close();
                 ITKV
             </div>
         </div>
-        <center><b>GESTION DE REPORTES DE INSUMOS VETERINARIOS</b></center>
+        <center><b>GESTION DE REPORTES DE CONSUMO DE BALANCEADOS</b></center>
     </div>
 </div> 
 
@@ -51,7 +51,7 @@ connection.close();
 
      
     <input type="text" class="datepicker " value="<%=fecha%>" required id="fecha">
-    <input  class="btn bg-navy"  type="button"  onclick="ir_grilla_insumos_veterinarios_itkv();" value="BUSCAR" >
+    <input  class="btn bg-navy"  type="button"  onclick="ir_grilla_consumo_balanceados_itkv();" value="BUSCAR" >
 
     <div id="div_grilla">
         

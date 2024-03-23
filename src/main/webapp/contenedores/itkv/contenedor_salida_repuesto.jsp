@@ -3,8 +3,7 @@
    Created on : 15-dic-2021, 9:51:44
    Author     : hvelazquez
 --%>
-<%@page import="itkv.itkv_datos"%>
-<%@page import="java.util.List"%>
+ <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="org.jfree.data.general.Dataset"%>
 <%@include  file="../../versiones.jsp" %>
@@ -12,29 +11,29 @@
 <%@include  file="../../cruds/conexion.jsp" %> 
 
 <%    PreparedStatement ps, ps2, ps3, ps4, ps5, ps6,ps7;
-    ResultSet rs, rs2, rs3, rs4, rs5, rs6,rs7;
+    ResultSet rs, rsActivo, rsUbicacion, rsActividad, rsRubro, rs6,rsRepuesto;
     try {
         ps = connection.prepareStatement(" SELECT DISTINCT T0.[U_retiradopor] as U_retiradopor              FROM    IGE1 T0");// 3
         rs = ps.executeQuery();
 
         ps2 = connection.prepareStatement(" SELECT T0.[PrcCode], T0.[PrcName],  T0.[DimCode] , T0.[U_CodAnt], T0.[U_Comen] FROM    OPRC T0 WHERE T0.[DimCode] = 4 ");// 3
-        rs2 = ps2.executeQuery();
+        rsActivo = ps2.executeQuery();
 
         ps3 = connection.prepareStatement(" SELECT T0.[PrcCode], T0.[PrcName], T0.[U_CodAnt], T0.[U_Comen]  FROM    OPRC T0 WHERE T0.[DimCode] = 3 ");// UBICACION
-        rs3 = ps3.executeQuery();
+        rsUbicacion = ps3.executeQuery();
 
         ps4 = connection.prepareStatement(" SELECT T0.[PrcCode], T0.[PrcName], T0.[U_CodAnt], T0.[U_Comen]  FROM    OPRC T0 WHERE T0.[DimCode] = 2 ");// RUBRO
-        rs4 = ps4.executeQuery();
+        rsActividad = ps4.executeQuery();
 
         ps5 = connection.prepareStatement(" SELECT T0.[PrcCode], T0.[PrcName], T0.[U_CodAnt], T0.[U_Comen]  FROM    OPRC T0 WHERE T0.[DimCode] =  1");// ACTIVIDAD
-        rs5 = ps5.executeQuery();
+        rsRubro = ps5.executeQuery();
         
         ps6 = connection.prepareStatement(" SELECT T0.[WhsCode], T0.[WhsName]                               FROM    OWHS T0 WHERE T0.[WhsCode]  like 'TAN%%'OR  T0.[WhsCode]  = 'DEP_GEN'OR  T0.[WhsCode]  = 'DEP_TAL' ");// ACTIVIDAD
         rs6 = ps6.executeQuery();
  
 
-        ps7 = connection.prepareStatement(" SELECT ItemCode , ItemName  , ItmsGrpCod , ItmsGrpNam	 , OnHand , InvntryUom  FROM  itkv_repuestos    ");// ACTIVIDAD
-        rs7 = ps7.executeQuery();
+        ps7 = connection.prepareStatement(" SELECT ItemCode , ItemName  , ItmsGrpCod , OnHand , InvntryUom  FROM  oitm	 where    QryGroup3='Y'   ");// ACTIVIDAD
+        rsRepuesto = ps7.executeQuery();
   
     
 %>
@@ -73,12 +72,20 @@
      <input type="text" class="form-control " placeholder="INGRESE NOMBRE" value=""   id="retirado_por" style="display: none">
         
    
-        
+        <strong><a>Ubicacion</a></strong>
+    <select class="form-control selectpicker " data-live-search="true" id="ubicacion">
+        <%  while (rsUbicacion.next()) 
+        {%>
+        <option value="<%=rsUbicacion.getString("PrcCODE")%>" desc="<%=rsUbicacion.getString("PrcName")%>" > 
+            <%=rsUbicacion.getString("PrcName")%>
+        </option>    
+        <% }%>
+    </select>       
     <strong ><a>Activo</a></strong>
     <select class="form-control selectpicker"data-live-search="true" id="activo_select" onchange="insert_valor_responsable_combo_itkv()">
-        <%  while (rs2.next()) {%>
-        <option value="<%=rs2.getString("PrcCODE")%>" desc="<%=rs2.getString("PrcName")%>" >
-            <%=rs2.getString("PrcName")%>
+        <%  while (rsActivo.next()) {%>
+        <option value="<%=rsActivo.getString("PrcCODE")%>" desc="<%=rsActivo.getString("PrcName")%>" >
+            <%=rsActivo.getString("PrcName")%>
         </option>    
         <% }%>
         <option value="OTROS">OTROS</option>    
@@ -87,17 +94,17 @@
       
       
  
-    <strong ><a>Rubro</a></strong>
-    <select class="form-control" id="rubro">
-        <%  while (rs4.next()) {%>
-        <option value="<%=rs4.getString("PrcCODE")%>" desc="<%=rs4.getString("PrcName")%>"><%=rs4.getString("PrcName")%></option>    
+    <strong ><a>Actividad</a></strong>
+    <select class="form-control" id="actividad">
+        <%  while (rsActividad.next()) {%>
+        <option value="<%=rsActividad.getString("PrcCODE")%>" desc="<%=rsActividad.getString("PrcName")%>"><%=rsActividad.getString("PrcName")%></option>    
         <% }%>
     </select> 
 
-    <strong ><a>Actividad</a></strong>
-    <select class="form-control" id="actividad">
-        <%  while (rs5.next()) {%>
-        <option value="<%=rs5.getString("PrcCODE")%>" desc="<%=rs5.getString("PrcName")%>"><%=rs5.getString("PrcName")%></option>    
+    <strong ><a>Rubro</a></strong>
+    <select class="form-control" id="rubro">
+        <%  while (rsRubro.next()) {%>
+        <option value="<%=rsRubro.getString("PrcCODE")%>" desc="<%=rsRubro.getString("PrcName")%>"><%=rsRubro.getString("PrcName")%></option>    
         <% }%>
     </select> 
     
@@ -111,8 +118,8 @@
                 <tr>
                     <th >  <strong ><a>Item</a></strong>
     <select class="form-control selectpicker" data-live-search="true"  id="item">
-        <%  while (rs7.next()) {%>
-        <option value="<%=rs7.getString("itemcode")%>" desc="<%=rs7.getString("itemname")%>"><%=rs7.getString("itemname")%></option>    
+        <%  while (rsRepuesto.next()) {%>
+        <option value="<%=rsRepuesto.getString("itemcode")%>" desc="<%=rsRepuesto.getString("itemname")%>"><%=rsRepuesto.getString("itemname")%></option>    
         <% }%>
     </select></th>
     <th><input type="number"  class=" form-control"  id="cantidad" placeholder="Ingrese cantidad"></th>
@@ -146,21 +153,7 @@
 
     </div>
 </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 <%
     } catch (Exception e) {
         out.print(e.getMessage());

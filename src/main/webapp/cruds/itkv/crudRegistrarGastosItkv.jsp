@@ -1,6 +1,3 @@
-<%@page import="java.io.FileOutputStream"%>
-<%@page import="java.io.File"%>
-<%@page import="java.io.InputStream"%>
 <%@page import="org.omg.CORBA.INTERNAL"%>
 <%@page import="org.json.JSONObject"%>
 <%@page import="java.sql.CallableStatement"%>
@@ -30,28 +27,15 @@
         String lt_total             = request.getParameter("lt_total");  
         String band                 = request.getParameter("band");  
         String tanqueLleno          = request.getParameter("tanqueLleno");  
-       
+        
         int tipo_respuesta = 0;
         String mensaje = "";
         JSONObject ob = new JSONObject();
         ob = new JSONObject();
                 connection.setAutoCommit(false);
         try {
-            if (Integer.parseInt(lt_inicio) > Integer.parseInt(lt_fin)) {
-                ob.put("mensaje", "LITROS INICIO NO DEBE SER MAYOR A LITROS FINAL.");
-                ob.put("tipo_respuesta", 0);
-                
-            } 
-              
-            else  if (Integer.parseInt(lt_inicio)==Integer.parseInt(lt_fin)) {
-                ob.put("mensaje", "LITROS INICIO NO DEBE SER IGUAL A LITROS FINAL.");
-                ob.put("tipo_respuesta", 0);
-                
-            }
-            else {
-
                 CallableStatement callableStatement = null;
-                callableStatement = connection.prepareCall("{call [stp_itkv_salida1Test2] (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
+                callableStatement = connection.prepareCall("{call [stp_itkv_gastos_combustibles] (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                 callableStatement.setString(1, responsable);
                 callableStatement.setInt(2, Integer.parseInt(id_usuario));
                 callableStatement.setString(3, id_activo);
@@ -63,10 +47,10 @@
                 callableStatement.setString(9, id_actividad);
                 callableStatement.setString(10, desc_actividad);
                 callableStatement.setString(11, km_ho);
-                callableStatement.setString(12, id_boca);
-                callableStatement.setString(13, desc_boca);
-                callableStatement.setInt(14, Integer.parseInt(lt_inicio));
-                callableStatement.setInt(15, Integer.parseInt(lt_fin));
+                callableStatement.setString(12, "N/A");
+                callableStatement.setString(13, "N/A");
+                callableStatement.setInt(14, 0);
+                callableStatement.setInt(15, 0);
                 callableStatement.setInt(16, Integer.parseInt(lt_total));
                 callableStatement.setString(17, id_tipo_combustible);
                 callableStatement.setString(18, tipo_combustible);
@@ -84,12 +68,10 @@
                 if (tipo_respuesta == 0) {
                     connection.rollback();
                 } else {
-                   // connection.rollback();
                     connection.commit();
                 }
 
-            }
-        } catch (Exception e) {
+         } catch (Exception e) {
             ob.put("mensaje", e.getMessage());
             ob.put("tipo_respuesta", 0);
             connection.rollback();

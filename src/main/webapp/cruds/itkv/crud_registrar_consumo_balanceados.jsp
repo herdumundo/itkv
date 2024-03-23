@@ -18,13 +18,10 @@
         String desc_rubro       = request.getParameter("desc_rubro");
         String id_actividad     = request.getParameter("id_actividad");
         String desc_actividad   = request.getParameter("desc_actividad");
-
         String id_ubicacion     = request.getParameter("id_ubicacion");
-        String desc_ubicacion   = request.getParameter("desc_ubicacion");     
-        String categoria        = request.getParameter("categoria");     
-
-        
-        
+        String desc_ubicacion   = request.getParameter("desc_ubicacion");
+        String fecha            = request.getParameter("fecha");
+          
         ObjectMapper mapper = new ObjectMapper();
         itkv_datos[] pp1 = mapper.readValue(grilla, itkv_datos[].class);
 
@@ -46,17 +43,19 @@
              
 
                 CallableStatement callableStatement = null;
-                callableStatement = connection.prepareCall("{call [itkv_salida_insumos_veterinarios_insert] (?,?,?,?,?,?,?,?,?,?,?,?)}");
+                callableStatement = connection.prepareCall("{call [itkv_consumo_balanceado_insert2] (?,?,?,?,?,?,?,?,?,?,?,?,?,?)}");
                 callableStatement.setString (1, responsable);
                 callableStatement.setInt    (2, Integer.parseInt(id_usuario));
-                callableStatement.setString (3, id_rubro);
-                callableStatement.setString (4, desc_rubro);
-                callableStatement.setString (5, id_actividad);
-                callableStatement.setString (6, desc_actividad); 
-                callableStatement.setObject (7, DataTableGrilla); 
-                callableStatement.setString (8, id_ubicacion); 
-                callableStatement.setString (9, desc_ubicacion); 
-                callableStatement.setString (10, categoria ); 
+                callableStatement.setString (3, id_activo);
+                callableStatement.setString (4, desc_activo);
+                callableStatement.setString (5, id_rubro);
+                callableStatement.setString (6, desc_rubro);
+                callableStatement.setString (7, id_actividad);
+                callableStatement.setString (8, desc_actividad); 
+                callableStatement.setObject (9, DataTableGrilla); 
+                callableStatement.setString (10, id_ubicacion); 
+                callableStatement.setString (11, desc_ubicacion); 
+                callableStatement.setString (12, fecha); 
                 
                 callableStatement.registerOutParameter("estado_registro", java.sql.Types.INTEGER);
                 callableStatement.registerOutParameter("mensaje", java.sql.Types.VARCHAR);

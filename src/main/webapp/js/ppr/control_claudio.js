@@ -2,8 +2,7 @@ var ruta_consultas_ppr = "./consultas/ppr/";
 var ruta_vistas_ppr = "./contenedores/contenedores_ppr/";
 var ruta_cruds_ppr = "./cruds/ppr/";
 
-
-function grafico_detalles_ppr()
+ function grafico_detalles_ppr()
 {
     $.ajax({
         type: "POST",

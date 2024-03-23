@@ -13,27 +13,26 @@
     {
         if(sesion==true) //VARIABLE DENTRO DE CHEQUEARSESION.JSP
         {
-            String archivo = request.getParameter("archivo");
-            File reportfile = new File(application.getRealPath("reportes/itkv/"+archivo+".jasper"));
+             File reportfile = new File(application.getRealPath("reportes/itkv/insumos_veterinarios_salidas.jasper"));
 
             Map<String, Object> parameter = new HashMap<String, Object>();
             String id = request.getParameter("id");
             parameter.put("id", Integer.parseInt(id));
- 
+
             byte[] bytes = JasperRunManager.runReportToPdf(reportfile.getPath(), parameter, connection);
             response.setContentType("application/pdf");
             response.setContentLength(bytes.length);
             ServletOutputStream outputstream = response.getOutputStream();
             outputstream.write(bytes, 0, bytes.length);
             outputstream.flush();
-            outputstream.close(); 
-
+            outputstream.close();
         }
     
     } 
     catch (Exception e) 
     {
-        String efd=e.toString();
+         out.print(e.toString());
+              
     } 
     finally 
     {

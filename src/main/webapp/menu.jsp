@@ -11,11 +11,7 @@
          <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ita Ka avo Sistema</title>
-        <!-- Google Font: Source Sans Pr
-        <link href="plugins/css_net.css" rel="stylesheet" type="text/css"/>
-        <!-- Font Awesome -->
-       <!--    <script src="https://kit.fontawesome.com/585f6e374d.js" crossorigin="anonymous"></script>-->
-        <!-- Ionicons -->
+      
         <script src="plugins/fontAwesome.js" type="text/javascript"></script>
         <link href="plugins/ionicons.min.css" rel="stylesheet" type="text/css"/>
         <!-- Tempusdominus Bootstrap 4 -->
@@ -35,7 +31,6 @@
         <link href="plugins/lib/themes/default.css" rel="stylesheet" id="theme_base" />
         <link href="plugins/lib/themes/default.date.css" rel="stylesheet" id="theme_date" />
        
-       <!--  <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>-->
          <link href="css/hover_datatable.css" rel="stylesheet" type="text/css"/>
  
          <link rel="stylesheet" type="text/css" href="plugins/autoFill.bootstrap4.min.css"/>
@@ -70,7 +65,6 @@
         <link href="plugins/chart.js/Chart.css" rel="stylesheet" type="text/css"/>
         
         <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-   <!--      <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'> -->
          <link href="plugins/font-awesome.min.css" rel="stylesheet" type="text/css"/>
                          
                          
@@ -397,15 +391,13 @@
             <script src="plugins/dropzone/min/dropzone.min.js"></script>
 
             <!---------------------------------------------------------------------------------> 
-            
-            
             <script src="plugins/sum().js" type="text/javascript"></script>
             <script src="plugins/jquery.inputmask.bundle.js" type="text/javascript"></script>
-            
-            <script src="js/principal.js?v=3.2" type="text/javascript"></script>
-               <script src="js/itkv/itkv_funciones.js" type="text/javascript"></script>
+            <script src="js/ppr/ppr_funciones.js" type="text/javascript"></script>
+            <script src="js/principal.js?v=3.5" type="text/javascript"></script>
+            <script src="js/itkv/itkv_funciones.js?v=3.5" type="text/javascript"></script>
             <script src="plugins/autoNumeric.js" type="text/javascript"></script>
-            
+             <script src="plugins/compressor.min.js" type="text/javascript"></script>
  
  
         

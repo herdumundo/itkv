@@ -19,8 +19,8 @@
    // String user = "cch";
     String passwd = "Paraguay2017";
     String db = "GrupoMaehara";
-    //String ip = "192.168.1.52";
-    String ip = "172.16.1.202";
+  //    String ip = "localhost";
+    String ip = "192.168.55.140";
     Connection connection=null;
  
         try 
